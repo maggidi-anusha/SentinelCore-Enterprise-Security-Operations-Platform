@@ -30,6 +30,13 @@ public class AssetService {
         return toDTO(asset);
     }
 
+    public List<AssetDTO> getAssetsByType(String assetType) {
+        return assetRepository.findByAssetType(assetType)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public AssetDTO createAsset(AssetDTO dto) {
 
         Asset asset = Asset.builder()
