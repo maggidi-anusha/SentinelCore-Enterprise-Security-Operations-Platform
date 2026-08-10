@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Sidebar from "./components/Sidebar";
 import TopBar from "./components/TopBar";
+import Alerts from "./pages/Alerts";
 
 import Dashboard from "./pages/Dashboard";
 import Assets from "./pages/Assets";
@@ -34,7 +35,9 @@ function App() {
                                 path="/assets"
                                 element={<Assets />}
                             />
-
+                            
+                            <Route path="/alerts" element={<Alerts />} />
+                            
                             <Route
                                 path="/assets/register"
                                 element={<RegisterAsset />}
