@@ -1,11 +1,13 @@
 package com.example.sentinelcore.service;
 
 import com.example.sentinelcore.dto.AssetDTO;
+import com.example.sentinelcore.dto.DashboardSummaryDTO;
 import com.example.sentinelcore.entity.Asset;
 import com.example.sentinelcore.repository.AssetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +51,12 @@ public class AssetService {
                 .cpuUsage(dto.getCpuUsage())
                 .diskUsage(dto.getDiskUsage())
                 .networkUsage(dto.getNetworkUsage())
+                .status(
+                        dto.getStatus() != null
+                                ? Asset.AssetStatus.valueOf(dto.getStatus().toUpperCase())
+                                : Asset.AssetStatus.UNKNOWN
+                )
+                .createdAt(LocalDateTime.now())
                 .build();
 
         Asset savedAsset = assetRepository.save(asset);
@@ -71,6 +79,11 @@ public class AssetService {
         asset.setCpuUsage(dto.getCpuUsage());
         asset.setDiskUsage(dto.getDiskUsage());
         asset.setNetworkUsage(dto.getNetworkUsage());
+        asset.setStatus(
+                dto.getStatus() != null
+                        ? Asset.AssetStatus.valueOf(dto.getStatus().toUpperCase())
+                        : Asset.AssetStatus.UNKNOWN
+        );
 
         Asset updatedAsset = assetRepository.save(asset);
 
@@ -83,6 +96,49 @@ public class AssetService {
             throw new RuntimeException("Asset not found with id: " + id);
         }
         assetRepository.deleteById(id);
+    }
+
+    public DashboardSummaryDTO getDashboardSummary() {
+
+        List<Asset> all = assetRepository.findAll();
+
+        long total = all.size();
+
+        long online = all.stream()
+                .filter(a -> a.getStatus() == Asset.AssetStatus.ONLINE)
+                .count();
+
+        long offline = all.stream()
+                .filter(a -> a.getStatus() == Asset.AssetStatus.OFFLINE)
+                .count();
+
+        long monitored = online + offline;
+
+        double uptime = monitored == 0
+                ? 0
+                : (online * 100.0) / monitored;
+
+        double avgCpu = all.stream()
+                .filter(a -> a.getCpuUsage() != null)
+                .mapToDouble(Asset::getCpuUsage)
+                .average()
+                .orElse(0);
+
+        double avgMemory = all.stream()
+                .filter(a -> a.getMemoryUsage() != null)
+                .mapToDouble(Asset::getMemoryUsage)
+                .average()
+                .orElse(0);
+
+        return DashboardSummaryDTO.builder()
+                .totalAssets(total)
+                .uptimePercentage(uptime)
+                .onlineAssets(online)
+                .offlineAssets(offline)
+                .criticalAlerts(0L)
+                .avgCpuUsage(avgCpu)
+                .avgMemoryUsage(avgMemory)
+                .build();
     }
 
     private AssetDTO toDTO(Asset asset) {
@@ -98,6 +154,11 @@ public class AssetService {
                 .cpuUsage(asset.getCpuUsage())
                 .diskUsage(asset.getDiskUsage())
                 .networkUsage(asset.getNetworkUsage())
+                .status(
+                        asset.getStatus() != null
+                                ? asset.getStatus().name()
+                                : null
+                )
                 .createdAt(
                         asset.getCreatedAt() != null
                                 ? asset.getCreatedAt().toString()

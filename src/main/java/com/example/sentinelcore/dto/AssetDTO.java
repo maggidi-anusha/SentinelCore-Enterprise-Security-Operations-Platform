@@ -29,5 +29,7 @@ public class AssetDTO {
 
     private Double networkUsage;
 
+    private String status;
+
     private String createdAt;
 }

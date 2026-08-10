@@ -36,5 +36,14 @@ public class Asset {
 
     private Double networkUsage;
 
+    @Enumerated(EnumType.STRING)
+    private AssetStatus status;
+
+    public enum AssetStatus {
+        ONLINE,
+        OFFLINE,
+        UNKNOWN
+    }
+
     private LocalDateTime createdAt;
 }

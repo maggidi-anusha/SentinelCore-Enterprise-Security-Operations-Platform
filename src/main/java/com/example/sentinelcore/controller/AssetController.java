@@ -1,6 +1,7 @@
 package com.example.sentinelcore.controller;
 
 import com.example.sentinelcore.dto.AssetDTO;
+import com.example.sentinelcore.dto.DashboardSummaryDTO;
 import com.example.sentinelcore.service.AssetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,11 @@ public class AssetController {
     @GetMapping
     public List<AssetDTO> getAllAssets() {
         return assetService.getAllAssets();
+    }
+
+    @GetMapping("/dashboard/summary")
+    public DashboardSummaryDTO getDashboardSummary() {
+        return assetService.getDashboardSummary();
     }
 
     @GetMapping("/{id}")
@@ -49,4 +55,6 @@ public class AssetController {
     public void deleteAsset(@PathVariable Long id) {
         assetService.deleteAsset(id);
     }
+
+
 }
