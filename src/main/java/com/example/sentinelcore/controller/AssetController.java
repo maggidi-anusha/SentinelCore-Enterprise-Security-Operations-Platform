@@ -36,4 +36,17 @@ public class AssetController {
     public AssetDTO createAsset(@RequestBody AssetDTO dto) {
         return assetService.createAsset(dto);
     }
+
+    @PutMapping("/{id}")
+    public AssetDTO updateAsset(
+            @PathVariable Long id,
+            @RequestBody AssetDTO dto) {
+
+        return assetService.updateAsset(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteAsset(@PathVariable Long id) {
+        assetService.deleteAsset(id);
+    }
 }

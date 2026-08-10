@@ -56,6 +56,35 @@ public class AssetService {
         return toDTO(savedAsset);
     }
 
+    public AssetDTO updateAsset(Long id, AssetDTO dto) {
+
+        Asset asset = assetRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Asset not found with id: " + id));
+
+        asset.setAssetName(dto.getAssetName());
+        asset.setAssetType(dto.getAssetType());
+        asset.setIpAddress(dto.getIpAddress());
+        asset.setLocation(dto.getLocation());
+        asset.setAddress(dto.getAddress());
+        asset.setMemoryUsage(dto.getMemoryUsage());
+        asset.setCpuUsage(dto.getCpuUsage());
+        asset.setDiskUsage(dto.getDiskUsage());
+        asset.setNetworkUsage(dto.getNetworkUsage());
+
+        Asset updatedAsset = assetRepository.save(asset);
+
+        return toDTO(updatedAsset);
+    }
+
+    public void deleteAsset(Long id) {
+
+        if (!assetRepository.existsById(id)) {
+            throw new RuntimeException("Asset not found with id: " + id);
+        }
+        assetRepository.deleteById(id);
+    }
+
     private AssetDTO toDTO(Asset asset) {
 
         return AssetDTO.builder()
