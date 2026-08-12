@@ -19,23 +19,31 @@ public class AlertService {
     private final AlertRepository alertRepository;
     private final AssetRepository assetRepository;
 
-    public AlertDTO createAlert(AlertDTO dto) {
+    public AlertDTO createAlert(Long assetId, String severity, String message) {
 
-        Asset asset = assetRepository.findById(dto.getAssetId())
+        Asset asset = assetRepository.findById(assetId)
                 .orElseThrow(() ->
-                        new RuntimeException(
-                                "Asset not found with id: " + dto.getAssetId()
-                        ));
+                        new RuntimeException("Asset not found: " + assetId)
+                );
 
         Alert alert = Alert.builder()
                 .asset(asset)
-                .severity(Alert.AlertSeverity.valueOf(dto.getSeverity()))
-                .message(dto.getMessage())
+                .severity(Alert.AlertSeverity.valueOf(severity))
+                .message(message)
                 .status(Alert.AlertStatus.OPEN)
                 .createdAt(LocalDateTime.now())
                 .build();
 
         return toDTO(alertRepository.save(alert));
+    }
+
+    public AlertDTO createAlert(AlertDTO dto) {
+
+        return createAlert(
+                dto.getAssetId(),
+                dto.getSeverity(),
+                dto.getMessage()
+        );
     }
 
     public List<AlertDTO> getAllAlerts() {

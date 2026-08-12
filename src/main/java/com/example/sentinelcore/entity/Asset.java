@@ -41,6 +41,8 @@ public class Asset {
 
     public enum AssetStatus {
         ONLINE,
+        WARNING,
+        CRITICAL,
         OFFLINE,
         UNKNOWN
     }

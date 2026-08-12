@@ -10,54 +10,31 @@ import RegisterAsset from "./pages/RegisterAsset";
 import AssetDetails from "./pages/AssetDetails";
 
 function App() {
+  return (
+    <BrowserRouter>
+      <div className="app-layout">
+        <Sidebar />
 
-    return (
-        <BrowserRouter>
+        <div className="main-area">
+          <TopBar />
 
-            <div className="app-layout">
+          <main className="page-content">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
 
-                <Sidebar />
+              <Route path="/assets" element={<Assets />} />
 
-                <div className="main-area">
+              <Route path="/alerts" element={<Alerts />} />
 
-                    <TopBar />
+              <Route path="/assets/register" element={<RegisterAsset />} />
 
-                    <main className="page-content">
-
-                        <Routes>
-
-                            <Route
-                                path="/"
-                                element={<Dashboard />}
-                            />
-
-                            <Route
-                                path="/assets"
-                                element={<Assets />}
-                            />
-                            
-                            <Route path="/alerts" element={<Alerts />} />
-                            
-                            <Route
-                                path="/assets/register"
-                                element={<RegisterAsset />}
-                            />
-
-                            <Route
-                                path="/assets/:id"
-                                element={<AssetDetails />}
-                            />
-
-                        </Routes>
-
-                    </main>
-
-                </div>
-
-            </div>
-
-        </BrowserRouter>
-    );
+              <Route path="/assets/:id" element={<AssetDetails />} />
+            </Routes>
+          </main>
+        </div>
+      </div>
+    </BrowserRouter>
+  );
 }
 
 export default App;

@@ -1,22 +1,19 @@
 package com.example.sentinelcore.controller;
 
-import com.example.sentinelcore.dto.HealthStatusDTO;
-import com.example.sentinelcore.service.HealthMonitoringService;
+import com.example.sentinelcore.service.HealthMonitorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/health")
 @RequiredArgsConstructor
-@CrossOrigin
 public class HealthController {
 
-    private final HealthMonitoringService healthMonitoringService;
+    private final HealthMonitorService healthMonitorService;
 
-    @GetMapping("/{assetId}")
-    public HealthStatusDTO checkHealth(
-            @PathVariable Long assetId) {
-
-        return healthMonitoringService.checkHealth(assetId);
+    @PostMapping("/check")
+    public String checkHealth() {
+        healthMonitorService.checkAssetHealth();
+        return "Health check completed successfully";
     }
 }
