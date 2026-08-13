@@ -12,4 +12,9 @@ public interface AlertRepository extends JpaRepository<Alert, Long> {
     List<Alert> findByStatus(Alert.AlertStatus status);
 
     List<Alert> findBySeverity(Alert.AlertSeverity severity);
+
+    List<Alert> findByAssetIdAndStatus(
+            Long assetId,
+            Alert.AlertStatus status
+    );
 }

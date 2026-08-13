@@ -54,7 +54,7 @@ public class AssetService {
                 .status(
                         dto.getStatus() != null
                                 ? Asset.AssetStatus.valueOf(dto.getStatus().toUpperCase())
-                                : Asset.AssetStatus.UNKNOWN
+                                : Asset.AssetStatus.ONLINE
                 )
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -82,9 +82,8 @@ public class AssetService {
         asset.setStatus(
                 dto.getStatus() != null
                         ? Asset.AssetStatus.valueOf(dto.getStatus().toUpperCase())
-                        : Asset.AssetStatus.UNKNOWN
+                        : Asset.AssetStatus.ONLINE
         );
-
         Asset updatedAsset = assetRepository.save(asset);
 
         return toDTO(updatedAsset);
@@ -108,11 +107,11 @@ public class AssetService {
                 .filter(a -> a.getStatus() == Asset.AssetStatus.ONLINE)
                 .count();
 
-        long offline = all.stream()
-                .filter(a -> a.getStatus() == Asset.AssetStatus.OFFLINE)
+        long critical = all.stream()
+                .filter(a -> a.getStatus() == Asset.AssetStatus.CRITICAL)
                 .count();
 
-        long monitored = online + offline;
+        long monitored = online + critical;
 
         double uptime = monitored == 0
                 ? 0
@@ -134,7 +133,7 @@ public class AssetService {
                 .totalAssets(total)
                 .uptimePercentage(uptime)
                 .onlineAssets(online)
-                .offlineAssets(offline)
+                .offlineAssets(critical)
                 .criticalAlerts(0L)
                 .avgCpuUsage(avgCpu)
                 .avgMemoryUsage(avgMemory)

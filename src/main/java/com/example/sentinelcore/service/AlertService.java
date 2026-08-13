@@ -107,6 +107,14 @@ public class AlertService {
                         ));
     }
 
+    public List<AlertDTO> getOpenAlerts() {
+        return alertRepository
+                .findByStatus(Alert.AlertStatus.OPEN)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
     private AlertDTO toDTO(Alert alert) {
 
         return AlertDTO.builder()
@@ -127,5 +135,15 @@ public class AlertService {
                                 : null
                 )
                 .build();
+    }
+
+    public boolean hasOpenAlert(Long assetId) {
+
+        return !alertRepository
+                .findByAssetIdAndStatus(
+                        assetId,
+                        Alert.AlertStatus.OPEN
+                )
+                .isEmpty();
     }
 }

@@ -126,7 +126,7 @@ function Assets() {
 
                                     <td>
                                         <span className="status-badge">
-                                            {asset.status || "UNKNOWN"}
+                                            {asset.status || "ONLINE"}
                                         </span>
                                     </td>
 

@@ -25,6 +25,11 @@ public class AlertController {
         return alertService.getAllAlerts();
     }
 
+    @GetMapping("/open")
+    public List<AlertDTO> getOpenAlerts() {
+        return alertService.getOpenAlerts();
+    }
+
     @GetMapping("/{id}")
     public AlertDTO getAlertById(@PathVariable Long id) {
         return alertService.getAlertById(id);

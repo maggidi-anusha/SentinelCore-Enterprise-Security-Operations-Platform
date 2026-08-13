@@ -30,24 +30,30 @@ public class HealthMonitorService {
 
                 asset.setStatus(Asset.AssetStatus.CRITICAL);
 
-                alertService.createAlert(
-                        asset.getId(),
-                        "CRITICAL",
-                        "CPU usage critical: "
-                                + asset.getCpuUsage() + "%"
-                );
+                if (!alertService.hasOpenAlert(asset.getId())) {
+
+                    alertService.createAlert(
+                            asset.getId(),
+                            "CRITICAL",
+                            "CPU usage critical: "
+                                    + asset.getCpuUsage() + "%"
+                    );
+                }
 
             } else if (asset.getMemoryUsage() != null &&
                     asset.getMemoryUsage() >= MEMORY_WARNING_THRESHOLD) {
 
                 asset.setStatus(Asset.AssetStatus.WARNING);
 
-                alertService.createAlert(
-                        asset.getId(),
-                        "MEDIUM",
-                        "Memory usage high: "
-                                + asset.getMemoryUsage() + "%"
-                );
+                if (!alertService.hasOpenAlert(asset.getId())) {
+
+                    alertService.createAlert(
+                            asset.getId(),
+                            "MEDIUM",
+                            "Memory usage high: "
+                                    + asset.getMemoryUsage() + "%"
+                    );
+                }
 
             } else {
 

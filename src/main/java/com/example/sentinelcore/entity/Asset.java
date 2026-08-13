@@ -44,7 +44,6 @@ public class Asset {
         WARNING,
         CRITICAL,
         OFFLINE,
-        UNKNOWN
     }
 
     private LocalDateTime createdAt;

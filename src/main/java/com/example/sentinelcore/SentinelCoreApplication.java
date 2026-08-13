@@ -9,9 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class SentinelCoreApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(
-                SentinelCoreApplication.class,
-                args
-        );
+        SpringApplication.run(SentinelCoreApplication.class, args);
     }
 }
