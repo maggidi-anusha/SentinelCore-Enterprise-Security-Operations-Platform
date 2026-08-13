@@ -30,7 +30,10 @@ public class AuthService {
             throw new RuntimeException("Invalid username or password");
         }
 
-        String token = jwtUtil.generateToken(user.getUsername());
+        String token = jwtUtil.generateToken(
+                user.getUsername(),
+                user.getRole()
+        );
 
         return LoginResponse.builder()
                 .token(token)

@@ -29,5 +29,18 @@ public class DataInitializer implements CommandLineRunner {
 
             System.out.println("Test admin user created.");
         }
+
+        if (userRepository.findByUsername("user").isEmpty()) {
+
+            User user = User.builder()
+                    .username("user")
+                    .password(passwordEncoder.encode("User@123"))
+                    .role("USER")
+                    .build();
+
+            userRepository.save(user);
+
+            System.out.println("Test normal user created.");
+        }
     }
 }

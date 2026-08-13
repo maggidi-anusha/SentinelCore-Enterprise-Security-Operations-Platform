@@ -1,6 +1,7 @@
 package com.example.sentinelcore.security;
 
 import com.example.sentinelcore.util.JwtUtil;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -32,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 request.getHeader("Authorization");
 
         String username = null;
+        String role = null;
         String token = null;
 
         if (authorizationHeader != null &&
@@ -41,13 +44,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             try {
                 username = jwtUtil.extractUsername(token);
+                role = jwtUtil.extractRole(token);
             } catch (Exception e) {
-                // Invalid or expired token
                 username = null;
+                role = null;
             }
         }
 
         if (username != null &&
+                role != null &&
                 SecurityContextHolder.getContext()
                         .getAuthentication() == null) {
 
@@ -55,7 +60,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     new UsernamePasswordAuthenticationToken(
                             username,
                             null,
-                            Collections.emptyList()
+                            Collections.singletonList(
+                                    new SimpleGrantedAuthority(
+                                            "ROLE_" + role
+                                    )
+                            )
                     );
 
             authentication.setDetails(
@@ -69,4 +78,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 }

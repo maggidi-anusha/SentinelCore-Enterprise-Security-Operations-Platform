@@ -37,6 +37,11 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+
+                        .requestMatchers(
+                                "/api/notification-rules/**"
+                        ).hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
 
