@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import TopBar from "./components/TopBar";
 import Alerts from "./pages/Alerts";
+import Login from "./pages/Login";
 
 import Dashboard from "./pages/Dashboard";
 import Assets from "./pages/Assets";
@@ -20,6 +21,8 @@ function App() {
 
           <main className="page-content">
             <Routes>
+              <Route path="/login" element={<Login />} />
+              
               <Route path="/" element={<Dashboard />} />
 
               <Route path="/assets" element={<Assets />} />

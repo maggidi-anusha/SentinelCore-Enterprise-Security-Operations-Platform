@@ -6,6 +6,22 @@ const api = axios.create({
     baseURL: API_BASE_URL,
 });
 
+// Automatically attach JWT to every API request
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem("token");
+
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
 export const getAssets = () => {
     return api.get("/assets");
 };
