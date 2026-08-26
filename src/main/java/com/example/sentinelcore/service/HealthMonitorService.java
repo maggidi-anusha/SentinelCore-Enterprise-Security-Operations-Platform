@@ -5,8 +5,10 @@ import com.example.sentinelcore.repository.AssetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import com.example.sentinelcore.entity.Alert;
 
 import java.util.List;
+import com.example.sentinelcore.entity.Alert;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +36,7 @@ public class HealthMonitorService {
 
                     alertService.createAlert(
                             asset.getId(),
-                            "CRITICAL",
+                            Alert.AlertSeverity.CRITICAL,
                             "CPU usage critical: "
                                     + asset.getCpuUsage() + "%"
                     );
@@ -49,7 +51,7 @@ public class HealthMonitorService {
 
                     alertService.createAlert(
                             asset.getId(),
-                            "MEDIUM",
+                            Alert.AlertSeverity.MEDIUM,
                             "Memory usage high: "
                                     + asset.getMemoryUsage() + "%"
                     );

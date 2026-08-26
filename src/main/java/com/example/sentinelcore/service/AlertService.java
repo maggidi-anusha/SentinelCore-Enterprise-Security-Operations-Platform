@@ -6,6 +6,7 @@ import com.example.sentinelcore.entity.Asset;
 import com.example.sentinelcore.repository.AlertRepository;
 import com.example.sentinelcore.repository.AssetRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,10 @@ public class AlertService {
 
     private final AlertRepository alertRepository;
     private final AssetRepository assetRepository;
+
+    private final NotificationService notificationService;
+    @Value("${sentinelcore.alert.email}")
+    private String alertReceiverEmail;
 
     public AlertDTO createAlert(Long assetId, String severity, String message) {
 
@@ -37,13 +42,35 @@ public class AlertService {
         return toDTO(alertRepository.save(alert));
     }
 
-    public AlertDTO createAlert(AlertDTO dto) {
+    public AlertDTO createAlert(Long assetId, Alert.AlertSeverity severity, String message) {
 
-        return createAlert(
-                dto.getAssetId(),
-                dto.getSeverity(),
-                dto.getMessage()
-        );
+        Asset asset = assetRepository.findById(assetId)
+                .orElseThrow(() -> new RuntimeException("Asset not found"));
+
+        Alert alert = new Alert();
+        alert.setAsset(asset);
+        alert.setSeverity(severity);
+        alert.setMessage(message);
+        alert.setStatus(Alert.AlertStatus.OPEN);
+
+        Alert savedAlert = alertRepository.save(alert);
+
+        if (savedAlert.getSeverity() == Alert.AlertSeverity.CRITICAL ||
+                savedAlert.getSeverity() == Alert.AlertSeverity.HIGH) {
+
+            System.out.println("=== EMAIL NOTIFICATION TRIGGERED ===");
+            System.out.println("Severity: " + savedAlert.getSeverity());
+            System.out.println("Receiver: " + alertReceiverEmail);
+
+            notificationService.sendAlertEmail(
+                    alertReceiverEmail,
+                    asset.getAssetName(),
+                    savedAlert.getSeverity().name(),
+                    savedAlert.getMessage()
+            );
+        }
+
+        return toDTO(savedAlert);
     }
 
     public List<AlertDTO> getAllAlerts() {

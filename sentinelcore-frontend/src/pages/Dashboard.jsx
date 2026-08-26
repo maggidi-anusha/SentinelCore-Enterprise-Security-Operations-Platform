@@ -134,18 +134,14 @@ function Dashboard() {
                 <div>
 
                     <h1 className="page-title">
-                        Infrastructure Overview
+                        Cloud Security Monitoring Dashboard
                     </h1>
 
                     <p className="page-description">
-                        Real-time visibility into registered infrastructure assets.
+                        Real-time cloud security monitoring and incident management overview.
                     </p>
 
                 </div>
-
-                <span className="dashboard-date">
-                    SentinelCore Monitoring
-                </span>
 
             </div>
 

@@ -30,15 +30,63 @@ public class AuthService {
             throw new RuntimeException("Invalid username or password");
         }
 
-        String token = jwtUtil.generateToken(
+        // Get the user's role from the Set<Role>
+        String role = user.getRoles()
+                .stream()
+                .findFirst()
+                .orElseThrow(() ->
+                        new RuntimeException("User has no assigned role"))
+                .getName();
+
+        String accessToken = jwtUtil.generateAccessToken(
                 user.getUsername(),
-                user.getRole()
+                role
+        );
+
+        String refreshToken = jwtUtil.generateRefreshToken(
+                user.getUsername()
         );
 
         return LoginResponse.builder()
-                .token(token)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .username(user.getUsername())
-                .role(user.getRole())
+                .role(role)
                 .build();
+    }
+
+    public String refreshAccessToken(String refreshToken) {
+
+        if (!jwtUtil.isTokenValid(refreshToken)) {
+            throw new RuntimeException(
+                    "Invalid or expired refresh token"
+            );
+        }
+
+        String username =
+                jwtUtil.extractUsername(refreshToken);
+
+        User user = userRepository
+                .findByUsername(username)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "User not found"
+                        )
+                );
+
+        String role = user.getRoles()
+                .stream()
+                .findFirst()
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "User has no assigned role"
+                        )
+                )
+                .getName();
+
+        return jwtUtil.generateAccessToken(
+                username,
+                role
+        );
     }
 }

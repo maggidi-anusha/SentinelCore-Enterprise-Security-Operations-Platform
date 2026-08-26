@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/assetApi";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
     const navigate = useNavigate();
+    const { loginUser } = useAuth();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -17,21 +19,20 @@ function Login() {
         setLoading(true);
 
         try {
-            const response = await api.post("/auth/login", {
-                username,
-                password,
-            });
+    const response = await api.post("/auth/login", {
+        username,
+        password,
+    });
 
-            const { token, role } = response.data;
+    loginUser(
+    response.data.accessToken,
+    response.data.refreshToken,
+    response.data.username,
+    response.data.role
+);
 
-            // Store JWT and role
-            localStorage.setItem("token", token);
-            localStorage.setItem("role", role);
-            localStorage.setItem("username", response.data.username);
-
-            // Go to dashboard after successful login
-            navigate("/");
-        } catch (err) {
+    navigate("/");
+} catch (err) {
             console.error("Login failed:", err);
 
             if (err.response?.status === 401 ||
@@ -45,66 +46,85 @@ function Login() {
         }
     };
 
-    return (
-        <div className="login-page">
+   return (
+    <div className="login-screen">
 
-            <div className="login-card">
+        <div className="login-panel">
 
-                <div className="login-header">
-                    <h1>SentinelCore</h1>
-                    <p>Security Operations Platform</p>
+            <div className="login-brand-block">
+                <div className="login-logo-box">
+                    SC
                 </div>
 
-                <form onSubmit={handleLogin}>
+                <h1 className="login-title">
+                    SentinelCore
+                </h1>
 
-                    <div className="form-group">
-                        <label>Username</label>
+                <p className="login-project-title">
+                    Cloud Security Monitoring System with Incident Management Assistance
+                </p>
 
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) =>
-                                setUsername(e.target.value)
-                            }
-                            placeholder="Enter username"
-                            required
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Password</label>
-
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) =>
-                                setPassword(e.target.value)
-                            }
-                            placeholder="Enter password"
-                            required
-                        />
-                    </div>
-
-                    {error && (
-                        <div className="error-message">
-                            {error}
-                        </div>
-                    )}
-
-                    <button
-                        type="submit"
-                        className="primary-button"
-                        disabled={loading}
-                    >
-                        {loading ? "Signing in..." : "Sign In"}
-                    </button>
-
-                </form>
-
+                <p className="login-description">
+                    Secure access to infrastructure monitoring,
+                    alerts and security operations.
+                </p>
             </div>
 
+            <form
+                className="login-form"
+                onSubmit={handleLogin}
+            >
+
+                <div className="login-field">
+                    <label>Username</label>
+
+                    <input
+                        type="text"
+                        value={username}
+                        onChange={(e) =>
+                            setUsername(e.target.value)
+                        }
+                        placeholder="Enter username"
+                        required
+                    />
+                </div>
+
+                <div className="login-field">
+                    <label>Password</label>
+
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) =>
+                            setPassword(e.target.value)
+                        }
+                        placeholder="Enter password"
+                        required
+                    />
+                </div>
+
+                {error && (
+                    <div className="login-error">
+                        {error}
+                    </div>
+                )}
+
+                <button
+                    type="submit"
+                    className="login-submit"
+                    disabled={loading}
+                >
+                    {loading
+                        ? "Signing in..."
+                        : "Sign In"}
+                </button>
+
+            </form>
+
         </div>
-    );
+
+    </div>
+);
 }
 
 export default Login;

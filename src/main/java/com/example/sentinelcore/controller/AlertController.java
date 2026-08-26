@@ -1,6 +1,7 @@
 package com.example.sentinelcore.controller;
 
 import com.example.sentinelcore.dto.AlertDTO;
+import com.example.sentinelcore.entity.Alert;
 import com.example.sentinelcore.service.AlertService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,16 @@ public class AlertController {
     private final AlertService alertService;
 
     @PostMapping
-    public AlertDTO createAlert(@RequestBody AlertDTO dto) {
-        return alertService.createAlert(dto);
+    public AlertDTO createAlert(
+            @RequestParam Long assetId,
+            @RequestParam String severity,
+            @RequestParam String message) {
+
+        return alertService.createAlert(
+                assetId,
+                Alert.AlertSeverity.valueOf(severity.toUpperCase()),
+                message
+        );
     }
 
     @GetMapping

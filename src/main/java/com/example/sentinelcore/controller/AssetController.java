@@ -5,6 +5,7 @@ import com.example.sentinelcore.dto.DashboardSummaryDTO;
 import com.example.sentinelcore.service.AssetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -38,11 +39,13 @@ public class AssetController {
         return assetService.getAssetsByType(assetType);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public AssetDTO createAsset(@RequestBody AssetDTO dto) {
         return assetService.createAsset(dto);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public AssetDTO updateAsset(
             @PathVariable Long id,
@@ -51,10 +54,10 @@ public class AssetController {
         return assetService.updateAsset(id, dto);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteAsset(@PathVariable Long id) {
         assetService.deleteAsset(id);
     }
-
 
 }

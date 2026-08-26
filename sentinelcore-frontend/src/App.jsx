@@ -1,43 +1,112 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+    BrowserRouter,
+    Routes,
+    Route
+} from "react-router-dom";
 
 import Sidebar from "./components/Sidebar";
 import TopBar from "./components/TopBar";
-import Alerts from "./pages/Alerts";
-import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Assets from "./pages/Assets";
+import Alerts from "./pages/Alerts";
 import RegisterAsset from "./pages/RegisterAsset";
 import AssetDetails from "./pages/AssetDetails";
 
-function App() {
-  return (
-    <BrowserRouter>
-      <div className="app-layout">
-        <Sidebar />
+function AppLayout({ children }) {
+    return (
+        <div className="app-layout">
 
-        <div className="main-area">
-          <TopBar />
+            <Sidebar />
 
-          <main className="page-content">
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              
-              <Route path="/" element={<Dashboard />} />
+            <div className="main-area">
 
-              <Route path="/assets" element={<Assets />} />
+                <TopBar />
 
-              <Route path="/alerts" element={<Alerts />} />
+                <main className="page-content">
+                    {children}
+                </main>
 
-              <Route path="/assets/register" element={<RegisterAsset />} />
+            </div>
 
-              <Route path="/assets/:id" element={<AssetDetails />} />
-            </Routes>
-          </main>
         </div>
-      </div>
-    </BrowserRouter>
-  );
+    );
+}
+
+function App() {
+
+    return (
+        <BrowserRouter>
+
+            <Routes>
+
+                {/* Login has NO sidebar or topbar */}
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
+
+                <Route
+                    path="/"
+                    element={
+                        <ProtectedRoute>
+                            <AppLayout>
+                                <Dashboard />
+                            </AppLayout>
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/assets"
+                    element={
+                        <ProtectedRoute>
+                            <AppLayout>
+                                <Assets />
+                            </AppLayout>
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/alerts"
+                    element={
+                        <ProtectedRoute>
+                            <AppLayout>
+                                <Alerts />
+                            </AppLayout>
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/assets/register"
+                    element={
+                        <ProtectedRoute>
+                            <AppLayout>
+                                <RegisterAsset />
+                            </AppLayout>
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/assets/:id"
+                    element={
+                        <ProtectedRoute>
+                            <AppLayout>
+                                <AssetDetails />
+                            </AppLayout>
+                        </ProtectedRoute>
+                    }
+                />
+
+            </Routes>
+
+        </BrowserRouter>
+    );
 }
 
 export default App;
