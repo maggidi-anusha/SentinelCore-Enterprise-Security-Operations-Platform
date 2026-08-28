@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAssets } from "../api/assetApi";
 import { useAuth } from "../context/AuthContext";
+import { searchAssets } from "../api/assetApi";
 
 function Assets() {
   const { isAdmin } = useAuth();
@@ -9,6 +10,7 @@ function Assets() {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     loadAssets();
@@ -30,6 +32,22 @@ function Assets() {
     }
   };
 
+  const handleSearch = async (e) => {
+    const value = e.target.value;
+
+    setSearch(value);
+
+    try {
+      const data = await searchAssets(value);
+
+      setAssets(data);
+    } catch (error) {
+      console.error("Search failed:", error);
+
+      setError("Unable to search assets.");
+    }
+  };
+
   if (loading) {
     return (
       <div className="page-container">
@@ -45,6 +63,16 @@ function Assets() {
         <div>
           <h1>Assets</h1>
           <p>Monitor and manage registered infrastructure assets.</p>
+        </div>
+
+        <div className="asset-search-container">
+          <input
+            type="text"
+            className="asset-search-input"
+            placeholder="Search by asset name or ID..."
+            value={search}
+            onChange={handleSearch}
+          />
         </div>
 
         {isAdmin && (

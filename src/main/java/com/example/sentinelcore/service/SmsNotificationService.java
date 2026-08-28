@@ -30,10 +30,6 @@ public class SmsNotificationService {
 
         Twilio.init(accountSid, authToken);
 
-        /*
-         * Trial accounts cannot send arbitrary SMS bodies.
-         * Twilio expects one of its predefined template names.
-         */
         String trialTemplate = "sms_internal_alerts";
 
         Message message = Message.creator(

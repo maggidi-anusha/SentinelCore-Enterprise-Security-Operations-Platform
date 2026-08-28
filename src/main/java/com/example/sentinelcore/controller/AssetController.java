@@ -4,6 +4,7 @@ import com.example.sentinelcore.dto.AssetDTO;
 import com.example.sentinelcore.dto.DashboardSummaryDTO;
 import com.example.sentinelcore.service.AssetService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -60,4 +61,15 @@ public class AssetController {
         assetService.deleteAsset(id);
     }
 
+
+    @GetMapping("/search")
+    public ResponseEntity<List<AssetDTO>> searchAssets(
+            @RequestParam(required = false)
+            String search) {
+
+        List<AssetDTO> assets =
+                assetService.searchAssets(search);
+
+        return ResponseEntity.ok(assets);
+    }
 }

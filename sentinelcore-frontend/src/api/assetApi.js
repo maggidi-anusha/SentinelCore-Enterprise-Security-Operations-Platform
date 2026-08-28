@@ -100,4 +100,17 @@ export const deleteAsset = (id) => {
     return api.delete(`/assets/${id}`);
 };
 
+export const searchAssets = async (search) => {
+    const response = await api.get(
+        "/assets/search",
+        {
+            params: {
+                search: search || null
+            }
+        }
+    );
+
+    return response.data;
+};
+
 export default api;

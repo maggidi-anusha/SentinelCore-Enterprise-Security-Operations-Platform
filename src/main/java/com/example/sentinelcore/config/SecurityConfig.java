@@ -49,9 +49,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        // ---------------------------
                         // AUTHENTICATION
-                        // ---------------------------
 
                         .requestMatchers(
                                 "/api/auth/**"
@@ -59,10 +57,8 @@ public class SecurityConfig {
                         .permitAll()
 
 
-                        // ---------------------------
                         // NOTIFICATION RULES
                         // ADMIN ONLY
-                        // ---------------------------
 
                         .requestMatchers(
                                 "/api/notification-rules/**"
@@ -70,10 +66,8 @@ public class SecurityConfig {
                         .hasRole("ADMIN")
 
 
-                        // ---------------------------
                         // ASSETS - READ
                         // USER + ADMIN
-                        // ---------------------------
 
                         .requestMatchers(
                                 HttpMethod.GET,
@@ -85,10 +79,9 @@ public class SecurityConfig {
                         )
 
 
-                        // ---------------------------
+
                         // ASSETS - CREATE
                         // ADMIN ONLY
-                        // ---------------------------
 
                         .requestMatchers(
                                 HttpMethod.POST,
@@ -97,10 +90,8 @@ public class SecurityConfig {
                         .hasRole("ADMIN")
 
 
-                        // ---------------------------
                         // ASSETS - UPDATE
                         // ADMIN ONLY
-                        // ---------------------------
 
                         .requestMatchers(
                                 HttpMethod.PUT,
@@ -109,10 +100,8 @@ public class SecurityConfig {
                         .hasRole("ADMIN")
 
 
-                        // ---------------------------
                         // ASSETS - DELETE
                         // ADMIN ONLY
-                        // ---------------------------
 
                         .requestMatchers(
                                 HttpMethod.DELETE,
@@ -120,10 +109,9 @@ public class SecurityConfig {
                         )
                         .hasRole("ADMIN")
 
-                                // ---------------------------
+
 // ALERTS - READ
 // VIEWER + ADMIN
-// ---------------------------
 
                                 .requestMatchers(
                                         HttpMethod.GET,
@@ -135,10 +123,9 @@ public class SecurityConfig {
                                 )
 
 
-// ---------------------------
 // ALERTS - CREATE
 // ADMIN ONLY
-// ---------------------------
+
 
                                 .requestMatchers(
                                         HttpMethod.POST,

@@ -6,6 +6,8 @@ import com.example.sentinelcore.entity.Asset;
 import com.example.sentinelcore.repository.AssetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.example.sentinelcore.repository.AssetSpecification;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -164,5 +166,28 @@ public class AssetService {
                                 : null
                 )
                 .build();
+    }
+
+    public List<AssetDTO> searchAssets(String search) {
+
+        Specification<Asset> specification =
+                AssetSpecification.searchAssets(search);
+
+        List<Asset> assets;
+
+        if (specification == null) {
+
+            assets = assetRepository.findAll();
+
+        } else {
+
+            assets = assetRepository.findAll(
+                    specification
+            );
+        }
+
+        return assets.stream()
+                .map(this::toDTO)
+                .toList();
     }
 }
