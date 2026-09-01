@@ -9,5 +9,4 @@ class SentinelCoreApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
