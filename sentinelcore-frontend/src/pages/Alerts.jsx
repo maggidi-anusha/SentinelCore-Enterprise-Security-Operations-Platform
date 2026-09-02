@@ -166,32 +166,32 @@ function Alerts() {
                                     </td>
 
                                     <td>
+    <div className="alert-actions">
 
-                                        {alert.status === "OPEN" && (
-                                            <button
-                                                onClick={() =>
-                                                    handleAcknowledge(
-                                                        alert.id
-                                                    )
-                                                }
-                                            >
-                                                Acknowledge
-                                            </button>
-                                        )}
+        {alert.status === "OPEN" && (
+            <button
+                className="secondary-button"
+                onClick={() =>
+                    handleAcknowledge(alert.id)
+                }
+            >
+                Acknowledge
+            </button>
+        )}
 
-                                        {alert.status !== "RESOLVED" && (
-                                            <button
-                                                onClick={() =>
-                                                    handleResolve(
-                                                        alert.id
-                                                    )
-                                                }
-                                            >
-                                                Resolve
-                                            </button>
-                                        )}
+        {alert.status !== "RESOLVED" && (
+            <button
+                className="primary-button"
+                onClick={() =>
+                    handleResolve(alert.id)
+                }
+            >
+                Resolve
+            </button>
+        )}
 
-                                    </td>
+    </div>
+</td>
 
                                 </tr>
 

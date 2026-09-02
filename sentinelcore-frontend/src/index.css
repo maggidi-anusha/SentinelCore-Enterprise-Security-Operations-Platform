@@ -1047,3 +1047,61 @@ label {
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
+
+.alert-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+
+    margin-top: 24px;
+}
+
+.form-card {
+    margin-top: 24px;
+}
+
+.required-star {
+    margin-left: 3px;
+
+    color: #ef6b73;
+
+    font-weight: 700;
+}
+
+/* Alert action buttons */
+.alert-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Register Asset form spacing */
+.form-card {
+    margin-top: 24px;
+}
+
+/* Register Asset action buttons */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+
+    margin-top: 24px;
+}
+
+/* Mandatory field indicator */
+.required-star {
+    margin-left: 3px;
+
+    color: #ef6b73;
+
+    font-weight: 700;
+}
