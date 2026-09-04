@@ -259,9 +259,31 @@ public class AlertService {
                 LocalDateTime.now()
         );
 
-        return toDTO(
-                alertRepository.save(alert)
-        );
+        Alert resolvedAlert =
+                alertRepository.save(alert);
+
+        try {
+
+            notificationService.sendAlertEmail(
+                    alertReceiverEmail,
+                    resolvedAlert.getAsset().getAssetName(),
+                    "RESOLVED",
+                    "The alert has been resolved successfully. "
+                            + "Original severity: "
+                            + resolvedAlert.getSeverity().name()
+                            + ". Original message: "
+                            + resolvedAlert.getMessage()
+            );
+
+        } catch (Exception e) {
+
+            System.err.println(
+                    "Resolution email failed: "
+                            + e.getMessage()
+            );
+        }
+
+        return toDTO(resolvedAlert);
     }
 
 
