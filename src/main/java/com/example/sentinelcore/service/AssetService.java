@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.ZoneOffset;
 
 @Service
 @RequiredArgsConstructor
@@ -58,7 +59,7 @@ public class AssetService {
                                 ? Asset.AssetStatus.valueOf(dto.getStatus().toUpperCase())
                                 : Asset.AssetStatus.ONLINE
                 )
-                .createdAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now(ZoneOffset.UTC))
                 .build();
 
         Asset savedAsset = assetRepository.save(asset);
@@ -162,7 +163,9 @@ public class AssetService {
                 )
                 .createdAt(
                         asset.getCreatedAt() != null
-                                ? asset.getCreatedAt().toString()
+                                ? asset.getCreatedAt()
+                                .toInstant(ZoneOffset.UTC)
+                                .toString()
                                 : null
                 )
                 .build();
