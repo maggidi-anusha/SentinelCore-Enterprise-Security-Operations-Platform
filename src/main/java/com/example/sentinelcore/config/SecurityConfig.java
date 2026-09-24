@@ -146,6 +146,93 @@ public class SecurityConfig {
                                 .hasRole("ADMIN")
 
 
+                        // INCIDENTS - READ: VIEWER + OPERATOR + ADMIN
+                        //             CREATE / ASSIGN / STATUS: OPERATOR + ADMIN
+                        //             DELETE: ADMIN ONLY
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/incidents/**"
+                        )
+                        .hasAnyRole("VIEWER", "OPERATOR", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/incidents/**"
+                        )
+                        .hasAnyRole("OPERATOR", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/incidents/**"
+                        )
+                        .hasAnyRole("OPERATOR", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/incidents/**"
+                        )
+                        .hasRole("ADMIN")
+
+
+                        // VULNERABILITIES - READ: VIEWER + OPERATOR + ADMIN
+                        //                   REPORT / PATCH: OPERATOR + ADMIN
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/vulnerabilities/**"
+                        )
+                        .hasAnyRole("VIEWER", "OPERATOR", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/vulnerabilities/**"
+                        )
+                        .hasAnyRole("OPERATOR", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/vulnerabilities/**"
+                        )
+                        .hasAnyRole("OPERATOR", "ADMIN")
+
+
+                        // AUDIT LOGS - ADMIN ONLY (read + append, never edit/delete)
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/audit/**"
+                        )
+                        .hasRole("ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/audit"
+                        )
+                        .hasRole("ADMIN")
+
+                        .requestMatchers(
+                                "/api/audit/**"
+                        )
+                        .denyAll()
+
+
+                        // COMPLIANCE - READ: VIEWER + OPERATOR + ADMIN
+                        //              RECORD CHECK: ADMIN ONLY
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/compliance/**"
+                        )
+                        .hasAnyRole("VIEWER", "OPERATOR", "ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/compliance/**"
+                        )
+                        .hasRole("ADMIN")
+
+
                         // All remaining APIs
                         // require authentication
                         .anyRequest()
@@ -167,12 +254,11 @@ public class SecurityConfig {
         CorsConfiguration configuration =
                 new CorsConfiguration();
 
-        configuration.setAllowedOrigins(
-                List.of(
-                        "http://localhost:5173",
-                        "http://localhost:5174"
-                )
-        );
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "http://localhost:5174",
+                "https://cloudsecuritymonitoringsystem.netlify.app"
+        ));
 
         configuration.setAllowedMethods(
                 List.of(

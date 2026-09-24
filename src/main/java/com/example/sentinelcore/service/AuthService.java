@@ -16,19 +16,34 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final AuditLogService auditLogService;
 
     public LoginResponse login(LoginRequest request) {
 
         User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() ->
-                        new RuntimeException("Invalid username or password"));
+                .filter(found -> passwordEncoder.matches(
+                        request.getPassword(),
+                        found.getPassword()))
+                .orElse(null);
 
-        if (!passwordEncoder.matches(
-                request.getPassword(),
-                user.getPassword())) {
+        if (user == null) {
+
+            auditLogService.recordAs(
+                    request.getUsername(),
+                    "LOGIN_FAILED",
+                    "AUTHENTICATION",
+                    "Invalid username or password"
+            );
 
             throw new RuntimeException("Invalid username or password");
         }
+
+        auditLogService.recordAs(
+                user.getUsername(),
+                "LOGIN",
+                "AUTHENTICATION",
+                "Successful login"
+        );
 
         // Get the user's role from the Set<Role>
         String role = user.getRoles()
