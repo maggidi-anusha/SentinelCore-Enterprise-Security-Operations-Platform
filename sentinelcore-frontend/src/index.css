@@ -2147,8 +2147,8 @@ label {
 }
 
 .ops-severity-low {
-    background: #f2f4f7;
-    color: #475467;
+    background: #edf4ff;
+    color: #1d5fb8;
 }
 
 .ops-severity-medium {
@@ -2314,4 +2314,610 @@ label {
     .ops-form-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* =========================================
+   DASHBOARD (Security Overview)
+   ========================================= */
+
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+
+    margin-bottom: 22px;
+}
+
+.dash-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.dash-updated {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 11px;
+    color: #7b8798;
+}
+
+.dash-live-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+    background: #0ca30c;
+    box-shadow: 0 0 0 3px #e3f6e3;
+}
+
+.dash-live-dot-busy {
+    background: #e0a800;
+    box-shadow: 0 0 0 3px #fff4d6;
+}
+
+.dash-refresh {
+    gap: 7px;
+}
+
+.dash-refresh:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.dash-spin {
+    animation: asset-spin 0.8s linear infinite;
+}
+
+/* ---------- KPI tiles ---------- */
+
+.dash-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+
+    margin-bottom: 16px;
+}
+
+.dash-kpi {
+    display: block;
+
+    padding: 16px 18px;
+
+    background: #ffffff;
+
+    border: 1px solid #e0e7f0;
+    border-radius: 10px;
+
+    box-shadow: 0 2px 6px rgba(25, 55, 95, 0.04);
+
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.dash-kpi:hover {
+    border-color: #b9cff0;
+    box-shadow: 0 6px 16px rgba(25, 55, 95, 0.08);
+    transform: translateY(-1px);
+}
+
+.dash-kpi-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dash-kpi-icon {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #edf4ff;
+    color: #2563eb;
+}
+
+.dash-kpi-icon-warning {
+    background: #fff6e0;
+    color: #b54708;
+}
+
+.dash-kpi-icon-danger {
+    background: #fef0ef;
+    color: #c4251c;
+}
+
+.dash-kpi-value {
+    margin-top: 10px;
+
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.6px;
+
+    color: #172033;
+}
+
+.dash-kpi-meta {
+    margin-top: 4px;
+
+    font-size: 11px;
+    color: #7b8798;
+}
+
+.dash-kpi-meta-danger {
+    color: #c4251c;
+    font-weight: 600;
+}
+
+/* ---------- Panels & grid ---------- */
+
+.dash-grid {
+    display: grid;
+    gap: 16px;
+
+    margin-bottom: 16px;
+}
+
+.dash-grid-wide {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+}
+
+.dash-grid-thirds {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dash-panel {
+    min-width: 0;
+
+    padding: 18px 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e0e7f0;
+    border-radius: 10px;
+
+    box-shadow: 0 2px 6px rgba(25, 55, 95, 0.04);
+}
+
+.dash-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+
+    margin-bottom: 14px;
+}
+
+.dash-panel .panel-subtitle {
+    margin-top: 3px;
+}
+
+.dash-panel-empty {
+    min-height: 160px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px dashed #e0e7f0;
+    border-radius: 8px;
+
+    font-size: 12px;
+    color: #8a95a5;
+}
+
+/* Recharts: no focus rectangle on click */
+.dash-panel .recharts-wrapper,
+.dash-panel .recharts-surface,
+.dash-panel .recharts-wrapper *:focus {
+    outline: none;
+}
+
+/* ---------- Legend + tooltip ---------- */
+
+.dash-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.dash-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    font-size: 11px;
+    color: #536174;
+}
+
+.dash-swatch {
+    width: 9px;
+    height: 9px;
+
+    flex-shrink: 0;
+
+    border-radius: 3px;
+}
+
+.dash-tooltip {
+    min-width: 150px;
+
+    padding: 10px 12px;
+
+    background: #ffffff;
+
+    border: 1px solid #e0e7f0;
+    border-radius: 8px;
+
+    box-shadow: 0 8px 24px rgba(25, 55, 95, 0.12);
+}
+
+.dash-tooltip-title {
+    margin-bottom: 6px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    color: #25334a;
+}
+
+.dash-tooltip-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 2px 0;
+
+    font-size: 11px;
+    color: #536174;
+}
+
+.dash-tooltip-name {
+    flex: 1;
+}
+
+.dash-tooltip-value {
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+    color: #172033;
+}
+
+.dash-tooltip-total {
+    margin-top: 4px;
+    padding-top: 6px;
+
+    border-top: 1px solid #edf1f6;
+}
+
+/* ---------- Asset health donut ---------- */
+
+.dash-donut {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.dash-donut-chart {
+    position: relative;
+}
+
+.dash-donut-center {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    pointer-events: none;
+}
+
+.dash-donut-center strong {
+    font-size: 26px;
+    font-weight: 700;
+    color: #172033;
+}
+
+.dash-donut-center span {
+    font-size: 11px;
+    color: #8a95a5;
+}
+
+.dash-status-list {
+    list-style: none;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+}
+
+.dash-status-list li {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 12px;
+    color: #536174;
+}
+
+.dash-status-name {
+    flex: 1;
+}
+
+.dash-status-count {
+    font-weight: 650;
+    color: #172033;
+    font-variant-numeric: tabular-nums;
+}
+
+.dash-status-pct {
+    min-width: 32px;
+
+    text-align: right;
+
+    font-size: 10px;
+    color: #98a2b3;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Recent activity ---------- */
+
+.dash-activity {
+    list-style: none;
+
+    margin: -4px -8px 0;
+}
+
+.dash-activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    padding: 8px;
+
+    border-radius: 7px;
+
+    transition: background 0.15s ease;
+}
+
+.dash-activity-item:hover {
+    background: #f6f9fd;
+}
+
+.dash-activity-dot {
+    width: 8px;
+    height: 8px;
+
+    flex-shrink: 0;
+
+    margin-top: 5px;
+
+    border-radius: 50%;
+}
+
+.dash-activity-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.dash-activity-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #25334a;
+}
+
+.dash-activity-meta {
+    margin-top: 2px;
+
+    font-size: 10px;
+    color: #8a95a5;
+}
+
+.dash-activity-time {
+    flex-shrink: 0;
+
+    font-size: 10px;
+    color: #98a2b3;
+    white-space: nowrap;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1280px) {
+    .dash-kpi-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1100px) {
+    .dash-grid-wide,
+    .dash-grid-thirds {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 720px) {
+    .dash-header {
+        flex-direction: column;
+    }
+
+    .dash-kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.ops-alert-message {
+    display: block;
+    max-width: 360px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* ---------- Dashboard: section titles ---------- */
+
+.dash-section-title {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+
+    margin: 26px 0 12px;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    color: #7b8798;
+}
+
+.dash-section-title span {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+
+    color: #98a2b3;
+}
+
+/* ---------- Dashboard: usage meters ---------- */
+
+.dash-meter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dash-meter-track {
+    flex: 1;
+    height: 6px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+}
+
+.dash-meter-fill {
+    height: 100%;
+    border-radius: 999px;
+}
+
+.dash-meter-normal .dash-meter-track { background: #dbe8fb; }
+.dash-meter-normal .dash-meter-fill  { background: #2a78d6; }
+
+.dash-meter-warning .dash-meter-track { background: #fdefc8; }
+.dash-meter-warning .dash-meter-fill  { background: #e0a800; }
+
+.dash-meter-critical .dash-meter-track { background: #f9d6d6; }
+.dash-meter-critical .dash-meter-fill  { background: #d03b3b; }
+
+.dash-meter-compact {
+    min-width: 96px;
+}
+
+.dash-meter-compact .dash-meter-track {
+    height: 5px;
+}
+
+.dash-meter-value {
+    width: 34px;
+
+    text-align: right;
+
+    font-size: 11px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+
+    color: #3a485c;
+}
+
+.dash-meter-critical .dash-meter-value {
+    color: #c4251c;
+}
+
+/* ---------- Dashboard: fleet utilization ---------- */
+
+.dash-fleet {
+    list-style: none;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.dash-fleet-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    margin-bottom: 6px;
+}
+
+.dash-fleet-label {
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #3a485c;
+}
+
+.dash-fleet-avg {
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #172033;
+}
+
+.dash-fleet-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+
+    margin-top: 5px;
+
+    font-size: 10px;
+    color: #8a95a5;
+}
+
+.dash-fleet-hot {
+    flex-shrink: 0;
+
+    font-weight: 600;
+    color: #b54708;
+}
+
+/* ---------- Dashboard: resource matrix ---------- */
+
+.dash-matrix-scroll {
+    margin: 0 -20px -18px;
+
+    overflow-x: auto;
+
+    border-top: 1px solid #edf1f5;
+}
+
+.dash-matrix {
+    min-width: 860px;
+}
+
+.dash-matrix thead th:first-child,
+.dash-matrix tbody td:first-child {
+    padding-left: 20px;
+}
+
+.dash-matrix .asset-name-cell:hover strong {
+    color: #1769e0;
 }
