@@ -1,4 +1,13 @@
-import { LayoutDashboard, Server, PlusCircle, ShieldAlert } from "lucide-react";
+import {
+  LayoutDashboard,
+  Server,
+  PlusCircle,
+  ShieldAlert,
+  Siren,
+  Bug,
+  ClipboardCheck,
+  ScrollText,
+} from "lucide-react";
 
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -66,6 +75,52 @@ function Sidebar() {
           <ShieldAlert size={20} />
           <span>Alerts</span>
         </NavLink>
+      </nav>
+
+      <div className="sidebar-section-title">SECURITY OPERATIONS</div>
+
+      <nav className="sidebar-nav">
+        <NavLink
+          to="/incidents"
+          className={({ isActive }) =>
+            isActive ? "nav-item active" : "nav-item"
+          }
+        >
+          <Siren size={20} />
+          <span>Incidents</span>
+        </NavLink>
+
+        <NavLink
+          to="/vulnerabilities"
+          className={({ isActive }) =>
+            isActive ? "nav-item active" : "nav-item"
+          }
+        >
+          <Bug size={20} />
+          <span>Vulnerabilities</span>
+        </NavLink>
+
+        <NavLink
+          to="/compliance"
+          className={({ isActive }) =>
+            isActive ? "nav-item active" : "nav-item"
+          }
+        >
+          <ClipboardCheck size={20} />
+          <span>Compliance</span>
+        </NavLink>
+
+        {isAdmin && (
+          <NavLink
+            to="/audit-logs"
+            className={({ isActive }) =>
+              isActive ? "nav-item active" : "nav-item"
+            }
+          >
+            <ScrollText size={20} />
+            <span>Audit Logs</span>
+          </NavLink>
+        )}
       </nav>
     </aside>
   );

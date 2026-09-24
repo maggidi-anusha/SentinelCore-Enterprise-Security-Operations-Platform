@@ -2022,3 +2022,296 @@ label {
         grid-template-columns: 1fr;
     }
 }
+/* =========================================
+   SECURITY OPERATIONS
+   (Incidents, Vulnerabilities, Compliance, Audit Logs)
+   ========================================= */
+
+/* Second nav group in the sidebar + scroll on short screens */
+.sidebar {
+    overflow-y: auto;
+}
+
+.sidebar-nav + .sidebar-section-title {
+    margin-top: 22px;
+}
+
+.page-container .assets-page-header .primary-button,
+.page-container .assets-page-header .secondary-button {
+    flex-shrink: 0;
+    gap: 6px;
+}
+
+/* ---------- Create forms ---------- */
+
+.ops-form-card {
+    margin-bottom: 18px;
+    padding: 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #d8e6fb;
+    border-radius: 10px;
+
+    box-shadow: 0 2px 8px rgba(25, 55, 95, 0.04);
+}
+
+.ops-form-title {
+    margin-bottom: 16px;
+
+    font-size: 14px;
+    font-weight: 650;
+
+    color: #25334a;
+}
+
+.ops-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px 16px;
+}
+
+.ops-form-wide {
+    grid-column: 1 / -1;
+}
+
+.ops-form-field textarea {
+    resize: vertical;
+}
+
+.ops-form-card .form-actions {
+    margin-top: 16px;
+}
+
+.ops-inline-error {
+    margin: 12px 0;
+    padding: 10px 12px;
+
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+
+    background: #fef3f2;
+
+    font-size: 12px;
+
+    color: #b42318;
+}
+
+/* ---------- Filter chips ---------- */
+
+.ops-filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.ops-chip {
+    padding: 6px 11px;
+
+    border: 1px solid #dfe7f1;
+    border-radius: 999px;
+
+    background: #ffffff;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    color: #58677b;
+
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.ops-chip:hover {
+    border-color: #b9cff0;
+}
+
+.ops-chip.active {
+    border-color: #1769e0;
+    background: #1769e0;
+    color: #ffffff;
+}
+
+/* ---------- Severity + risk ---------- */
+
+.ops-severity {
+    display: inline-block;
+
+    padding: 4px 8px;
+
+    border-radius: 5px;
+
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.ops-severity-low {
+    background: #f2f4f7;
+    color: #475467;
+}
+
+.ops-severity-medium {
+    background: #fffaeb;
+    color: #b54708;
+}
+
+.ops-severity-high {
+    background: #fff4ed;
+    color: #c4320a;
+}
+
+.ops-severity-critical {
+    background: #d92d20;
+    color: #ffffff;
+}
+
+.ops-risk {
+    display: inline-block;
+    min-width: 34px;
+
+    padding: 3px 6px;
+
+    border-radius: 5px;
+
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.ops-risk-low {
+    background: #ecfdf3;
+    color: #16845b;
+}
+
+.ops-risk-medium {
+    background: #fffaeb;
+    color: #b54708;
+}
+
+.ops-risk-high {
+    background: #fff4ed;
+    color: #c4320a;
+}
+
+.ops-risk-critical {
+    background: #fef3f2;
+    color: #d92d20;
+}
+
+/* ---------- Incident statuses ---------- */
+
+.ops-status-open {
+    background: #fef3f2;
+    color: #d92d20;
+}
+
+.ops-status-in_progress {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.ops-status-resolved {
+    background: #ecfdf3;
+    color: #16845b;
+}
+
+.ops-status-closed {
+    background: #f2f4f7;
+    color: #667085;
+}
+
+/* ---------- Table helpers ---------- */
+
+.ops-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ops-small-button {
+    gap: 5px;
+    padding: 6px 9px;
+
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.ops-status-select {
+    width: auto;
+
+    padding: 6px 8px;
+
+    font-size: 11px;
+}
+
+.ops-icon-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #d92d20;
+
+    cursor: pointer;
+}
+
+.ops-icon-danger:hover {
+    background: #fef3f2;
+}
+
+.asset-name-cell span.ops-description {
+    max-width: 320px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    font-size: 10px;
+}
+
+.ops-muted {
+    color: #98a2b3;
+}
+
+.ops-subline {
+    margin-top: 4px;
+    font-size: 9px;
+}
+
+.ops-overdue {
+    margin-top: 3px;
+
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.ops-remarks {
+    max-width: 340px;
+    line-height: 1.5;
+}
+
+.ops-nowrap {
+    white-space: nowrap;
+}
+
+.ops-metric-small {
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+@media (max-width: 900px) {
+    .ops-form-grid {
+        grid-template-columns: 1fr;
+    }
+}

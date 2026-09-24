@@ -73,6 +73,10 @@ export function AuthProvider({ children }) {
     const isAdmin =
         role === "ROLE_ADMIN";
 
+    // OPERATOR + ADMIN can create / update incidents and vulnerabilities
+    const canOperate =
+        isAdmin || role === "ROLE_OPERATOR";
+
     const isAuthenticated =
         !!accessToken;
 
@@ -84,6 +88,7 @@ export function AuthProvider({ children }) {
                 username,
                 role,
                 isAdmin,
+                canOperate,
                 isAuthenticated,
                 loginUser,
                 logout

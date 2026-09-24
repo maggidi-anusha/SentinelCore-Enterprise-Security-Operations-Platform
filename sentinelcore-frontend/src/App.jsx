@@ -14,6 +14,10 @@ import Assets from "./pages/Assets";
 import Alerts from "./pages/Alerts";
 import RegisterAsset from "./pages/RegisterAsset";
 import AssetDetails from "./pages/AssetDetails";
+import Incidents from "./pages/Incidents";
+import Vulnerabilities from "./pages/Vulnerabilities";
+import Compliance from "./pages/Compliance";
+import AuditLogs from "./pages/AuditLogs";
 
 function AppLayout({ children }) {
     return (
@@ -98,6 +102,50 @@ function App() {
                         <ProtectedRoute>
                             <AppLayout>
                                 <AssetDetails />
+                            </AppLayout>
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/incidents"
+                    element={
+                        <ProtectedRoute>
+                            <AppLayout>
+                                <Incidents />
+                            </AppLayout>
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/vulnerabilities"
+                    element={
+                        <ProtectedRoute>
+                            <AppLayout>
+                                <Vulnerabilities />
+                            </AppLayout>
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/compliance"
+                    element={
+                        <ProtectedRoute>
+                            <AppLayout>
+                                <Compliance />
+                            </AppLayout>
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/audit-logs"
+                    element={
+                        <ProtectedRoute>
+                            <AppLayout>
+                                <AuditLogs />
                             </AppLayout>
                         </ProtectedRoute>
                     }
