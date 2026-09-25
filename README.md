@@ -1,10 +1,10 @@
-# SentinelCore – Enterprise Security Operations Platform
+# SentinelCore: Cloud Security Monitoring System with Incident Management Assistance
 
 ## Overview
 
-SentinelCore is an enterprise security operations platform designed
-to provide infrastructure monitoring, security management,
-vulnerability management, and audit and compliance capabilities.
+SentinelCore is a cloud security monitoring system with incident
+management assistance. It provides infrastructure monitoring, security
+management, vulnerability management, and audit and compliance capabilities.
 
 ## Objectives
 
@@ -23,6 +23,7 @@ vulnerability management, and audit and compliance capabilities.
 - Maven
 - Spring Data JPA
 - Spring Security
+- JWT authentication
 - Lombok
 
 ### Database
@@ -32,6 +33,11 @@ vulnerability management, and audit and compliance capabilities.
 - React 19
 - Vite
 - Axios
+- Recharts
+
+### Integrations
+- Gmail SMTP (email alerts)
+- Twilio (SMS alerts)
 
 ### Development Tools
 - IntelliJ IDEA
@@ -41,8 +47,10 @@ vulnerability management, and audit and compliance capabilities.
 
 ### Deployment
 - Docker
-- Kubernetes
-- AWS
+- Netlify
+- Render
+- Neon PostgreSQL
+- AWS EC2 + RDS (backup)
 
 ## Project Architecture
 
@@ -58,12 +66,15 @@ domain, event, data, security, and infrastructure concerns.
 - Disk monitoring
 - Network monitoring
 - Health monitoring
+- Dashboard with charts
 
 ### Milestone 2 – Security Management
 - Authentication
 - Authorization
 - Alert management
 - Resolution workflow
+- Incident management
+- Email and SMS notifications
 
 ### Milestone 3 – Vulnerability Management
 - Vulnerability tracking
@@ -76,7 +87,7 @@ domain, event, data, security, and infrastructure concerns.
 ## Deployment
 
 - Frontend: Netlify
-- Backend: Render (Docker web service, deployed from the `main` branch)
+- Backend: Render (Docker web service, deployed automatically from the `main` branch)
 - Database: Neon PostgreSQL
 - AWS EC2 + RDS: previous deployment, stopped and kept as a backup
 
