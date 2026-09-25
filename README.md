@@ -72,3 +72,23 @@ domain, event, data, security, and infrastructure concerns.
 ### Milestone 4 – Audit and Compliance
 - Audit logging
 - Compliance monitoring
+
+## Deployment
+
+- Frontend: Netlify
+- Backend: Render (Docker web service, deployed from the `main` branch)
+- Database: Neon PostgreSQL
+- AWS EC2 + RDS: previous deployment, stopped and kept as a backup
+
+Netlify forwards `/api/*` requests to the Render backend
+(see `sentinelcore-frontend/public/_redirects`).
+
+The backend is configured through environment variables in Render:
+`SPRING_DATASOURCE_URL`, `DB_USERNAME`, `DB_PASSWORD`, the mail and
+Twilio settings, `SPRING_JPA_SHOW_SQL=false` and `TZ=Asia/Kolkata`.
+
+Render's free plan sleeps after a period without traffic, so the
+first request after inactivity may take longer while the service starts.
+
+Demo data can be loaded with `scripts/demo-data/seed-demo-data.ps1`
+(add `-Target neon` for the Neon database).

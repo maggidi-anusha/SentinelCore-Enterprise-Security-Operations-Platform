@@ -37,6 +37,9 @@
 
 \set ON_ERROR_STOP on
 
+-- same timezone the backend runs in (TZ=Asia/Kolkata on Render)
+SET TIME ZONE 'Asia/Kolkata';
+
 BEGIN;
 
 -- Timestamp helper: N days ago at a given local time of day.
