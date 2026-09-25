@@ -1,13 +1,13 @@
 -- =====================================================================
--- SentinelCore - LOCAL DEMO SEED DATA
+-- SentinelCore - DEMO SEED DATA
 -- =====================================================================
 -- Adds a coherent demo dataset (assets, alerts, incidents,
 -- vulnerabilities, compliance checks, audit logs) spread over the last
 -- 14 days so the dashboard charts have something meaningful to show.
 --
 -- SAFETY
---   * Local only: aborts unless connected to database "sentinelcore_db"
---     on a loopback address (localhost / 127.0.0.1 / ::1).
+--   * Aborts unless connected to database "sentinelcore_db" on a loopback
+--     address, or run through seed-demo-data.ps1 -Target neon.
 --   * INSERT only - never updates or deletes existing rows.
 --   * Idempotent: if the demo marker asset already exists, nothing is
 --     inserted, so running it twice never creates duplicates.
@@ -76,7 +76,8 @@ BEGIN
     END IF;
 
     IF inet_server_addr() IS NOT NULL
-       AND NOT (inet_server_addr() << inet '127.0.0.0/8' OR inet_server_addr() = inet '::1') THEN
+       AND NOT (inet_server_addr() << inet '127.0.0.0/8' OR inet_server_addr() = inet '::1')
+       AND current_setting('sentinelcore.seed_target', true) IS DISTINCT FROM 'neon' THEN
         RAISE EXCEPTION 'Refusing to seed: server address % is not local', inet_server_addr();
     END IF;
 

@@ -1,12 +1,13 @@
 -- =====================================================================
--- SentinelCore - REMOVE LOCAL DEMO DATA
+-- SentinelCore - REMOVE DEMO DATA
 -- =====================================================================
 -- Deletes ONLY the rows created by demo-seed.sql, matched on their exact
 -- demo identifiers. Your own assets, alerts, incidents, etc. are never
 -- touched. Use it to refresh the demo (reset, then seed again) so the
 -- timestamps are relative to today again.
 --
--- Local only: aborts unless connected to sentinelcore_db on loopback.
+-- Aborts unless connected to sentinelcore_db on loopback, or run through
+-- seed-demo-data.ps1 -Target neon.
 -- Run with:  scripts\demo-data\seed-demo-data.ps1 -Reset
 -- =====================================================================
 
@@ -23,7 +24,8 @@ BEGIN
     END IF;
 
     IF inet_server_addr() IS NOT NULL
-       AND NOT (inet_server_addr() << inet '127.0.0.0/8' OR inet_server_addr() = inet '::1') THEN
+       AND NOT (inet_server_addr() << inet '127.0.0.0/8' OR inet_server_addr() = inet '::1')
+       AND current_setting('sentinelcore.seed_target', true) IS DISTINCT FROM 'neon' THEN
         RAISE EXCEPTION 'Refusing to reset: server address % is not local', inet_server_addr();
     END IF;
 

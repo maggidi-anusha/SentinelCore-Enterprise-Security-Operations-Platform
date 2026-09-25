@@ -1,29 +1,31 @@
 <#
 .SYNOPSIS
-    Seed (or reset) SentinelCore demo data in the LOCAL PostgreSQL database.
+    Seed (or reset) SentinelCore demo data.
 
 .DESCRIPTION
-    Always connects to localhost:5432 / sentinelcore_db - the host is hard-coded
-    so this can never touch AWS / RDS. Uses the same DB_USERNAME and DB_PASSWORD
-    environment variables as the Spring Boot app.
+    Default target is the local database (localhost:5432 / sentinelcore_db) using
+    the same DB_USERNAME and DB_PASSWORD as the Spring Boot app.
+
+    -Target neon seeds the Neon database used by the Render deployment. It reads
+    the Neon connection string from NEON_DATABASE_URL (asks for it if not set)
+    and refuses any host that is not *.neon.tech.
 
     Seeding is idempotent: running it again does nothing if the demo data exists.
 
 .EXAMPLE
-    .\scripts\demo-data\seed-demo-data.ps1          # add demo data
-    .\scripts\demo-data\seed-demo-data.ps1 -Reset   # remove demo data, then add it again with fresh dates
-    .\scripts\demo-data\seed-demo-data.ps1 -Remove  # remove demo data only
+    .\scripts\demo-data\seed-demo-data.ps1                # add demo data locally
+    .\scripts\demo-data\seed-demo-data.ps1 -Reset         # remove demo data, then add it again with fresh dates
+    .\scripts\demo-data\seed-demo-data.ps1 -Remove        # remove demo data only
+    .\scripts\demo-data\seed-demo-data.ps1 -Target neon   # same, against Neon
 #>
 param(
     [switch]$Reset,
-    [switch]$Remove
+    [switch]$Remove,
+    [ValidateSet("local", "neon")]
+    [string]$Target = "local"
 )
 
 $ErrorActionPreference = "Stop"
-
-$DbHost = "localhost"
-$DbPort = 5432
-$DbName = "sentinelcore_db"
 
 $psql = (Get-Command psql -ErrorAction SilentlyContinue).Source
 if (-not $psql) {
@@ -32,18 +34,37 @@ if (-not $psql) {
 }
 if (-not $psql) { throw "psql.exe not found. Install PostgreSQL client tools or add psql to PATH." }
 
-if (-not $env:DB_USERNAME -or -not $env:DB_PASSWORD) {
-    throw "Set DB_USERNAME and DB_PASSWORD (the same values the backend uses) before running."
+if ($Target -eq "neon") {
+    $url = $env:NEON_DATABASE_URL
+    if (-not $url) { $url = Read-Host "Neon connection string (postgresql://...)" }
+
+    if ($url -notmatch '^postgres(ql)?://[^@]+@([^/:?]+)') { throw "That does not look like a Neon connection string." }
+    $dbHost = $Matches[2]
+    if ($dbHost -notlike "*.neon.tech") { throw "Refusing to run against $dbHost - expected a *.neon.tech host." }
+
+    $connArgs = @($url)
+    $dbLabel = $dbHost
+    # lets the SQL scripts accept a non-local server
+    $setTarget = @("-c", "SET sentinelcore.seed_target = 'neon'")
+}
+else {
+    if (-not $env:DB_USERNAME -or -not $env:DB_PASSWORD) {
+        throw "Set DB_USERNAME and DB_PASSWORD (the same values the backend uses) before running."
+    }
+    $env:PGPASSWORD = $env:DB_PASSWORD
+
+    $connArgs = @("-h", "localhost", "-p", "5432", "-U", $env:DB_USERNAME, "-d", "sentinelcore_db")
+    $dbLabel = "localhost/sentinelcore_db"
+    $setTarget = @()
 }
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$env:PGPASSWORD = $env:DB_PASSWORD
 
 function Invoke-Sql([string]$file) {
-    Write-Host "`n> $([IO.Path]::GetFileName($file)) on $DbHost/$DbName" -ForegroundColor Cyan
+    Write-Host "`n> $([IO.Path]::GetFileName($file)) on $dbLabel" -ForegroundColor Cyan
     # psql prints NOTICEs on stderr; judge success by exit code, not stderr.
     $ErrorActionPreference = "Continue"
-    & $psql -h $DbHost -p $DbPort -U $env:DB_USERNAME -d $DbName -v ON_ERROR_STOP=1 -q -f $file
+    & $psql @connArgs -v ON_ERROR_STOP=1 -q @setTarget -f $file
     if ($LASTEXITCODE -ne 0) { throw "psql failed on $file (exit $LASTEXITCODE)" }
 }
 
@@ -52,7 +73,7 @@ try {
     if (-not $Remove)       { Invoke-Sql (Join-Path $scriptDir "demo-seed.sql") }
 
     Write-Host "`nCurrent row counts:" -ForegroundColor Cyan
-    & $psql -h $DbHost -p $DbPort -U $env:DB_USERNAME -d $DbName -c @"
+    & $psql @connArgs -c @"
 SELECT 'assets' AS table_name, count(*) FROM assets
 UNION ALL SELECT 'alerts', count(*) FROM alerts
 UNION ALL SELECT 'incidents', count(*) FROM incidents
