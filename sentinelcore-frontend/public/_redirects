@@ -1,2 +1,2 @@
-/api/*  http://13.48.7.123:8080/api/:splat  200
+/api/*  https://sentinelcore-backend-nnin.onrender.com/api/:splat  200
 /*      /index.html                               200
